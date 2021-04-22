@@ -1,0 +1,52 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class Team
+{
+protected:
+    char name[15];
+    int wins;
+    int loss;
+
+public:
+    Team( char name[15],int wins,int loss)
+    {
+        strcpy(this->name,name);
+        this->wins=wins;
+        this->loss=loss;
+    }
+    void print()
+    {
+        cout<<"Ime: "<<name<<" Pobedi: "<<wins<<" Porazi: "<<loss;
+    }
+};
+class FootballTeam : public Team
+{
+    int red;
+    int yellow;
+    int draws;
+ public:
+     FootballTeam(char name[15],int wins,int loss ,int red,int yellow,int draws) :Team(name,wins,loss)
+     {
+         this->red=red;
+         this->yellow=yellow;
+         this->draws=draws;
+     }
+     void print()
+     {
+          cout<<"Ime: "<<name<<" Pobedi: "<<wins<<" Porazi: "<<loss<<" Nereseni: "<<draws;
+          int p=(wins*3)+draws;
+          cout<<" Poeni: "<<p<<endl;
+     }
+};
+
+
+int main(){
+	char name[15];
+	int wins,loss,red,yellow,draws;
+	cin>>name>>wins>>loss>>red>>yellow>>draws;
+	FootballTeam f1(name,wins,loss,red,yellow,draws);
+	f1.print();
+	return 0;
+}
