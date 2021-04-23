@@ -1,0 +1,99 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class RealEstate
+{
+protected:
+    char *address;
+    int area;
+    int price;
+public:
+    // STEP 1: Constructors
+    RealEstate(char *address="no", int area=0,int price=0)
+    {
+        this->address=new char[strlen(address)+1];
+        strcpy(this->address,address);
+        this->area=area;
+        this->price=price;
+    }
+    RealEstate(const RealEstate & re)
+    {
+        this->address=new char[strlen(re.address)+1];
+        strcpy(this->address,re.address);
+        this->area=re.area;
+        this->price=re.price;
+    }
+    // STEP 2 : Methods
+    int RE_price()
+    {
+        return area*price;
+    }
+    void print()
+    {
+        cout<<address<<", Kvadratura: "<<area<<", Cena po Kvadrat: "<<price<<endl;
+    }
+    float estateTax()
+    {
+        return RE_price()*0.05;
+    }
+    //STEP 3 : Destructor
+    ~RealEstate()
+    {
+        delete [] address;
+    }
+    friend istream &operator>>(istream &in, RealEstate &re)
+    {
+        return in>>re.address>>re.area>>re.price;
+    }
+    char *getAddress()
+    {
+        return address;
+    }
+};
+
+class Villa : public RealEstate
+{
+private:
+    int tax;
+public:
+    // STEP 1 : Constructor
+    Villa(char *address="no", int area=0,int price=0 , int tax=0) : RealEstate(address,area, price)
+    {
+        this->tax=tax;
+    }
+    Villa(const Villa & v): RealEstate(v)
+    {
+        this->tax=v.tax;
+    }
+    // STEP 2 : methods
+    void print()
+    {
+        cout<<address<<", Kvadratura: "<<area<<", Cena po Kvadrat: "<<price<<", Danok na luksuz: "<<tax<<endl;
+    }
+    float estateTax()
+    {
+        return (price*area)*(((float)tax/100)+0.05);
+    }
+
+    friend istream &operator>>(istream &in, Villa &v)
+    {
+        return in>>v.address>>v.area>>v.price>>v.tax;
+    }
+     char *getAddress()
+    {
+        return address;
+    }
+};
+
+int main(){
+    RealEstate re;
+    Villa v;
+    cin >> re;
+    cin >> v;
+    re.print();
+    cout << "Danok za: " << re.getAddress() << ", e: " << re.estateTax() << endl;
+    v.print();
+    cout << "Danok za: " << v.getAddress() << ", e: " << v.estateTax() << endl;
+    return 0;
+}
